@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
-using WebApi.ActionResults;
 using WebApi.Controllers.Abstract;
 using WebApi.Extensions;
 using WebApi.Models;
@@ -53,11 +52,10 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            RangeContentInfo rangeContentInfo = SetRangeContentInfo();
+            RangeContentInfo rangeContentInfo = GetRangeContentInfo();
 
-            return new FileResult(report.MapToViewModel(), rangeContentInfo);
+            return FileResult(report.MapToViewModel(), rangeContentInfo);
         }
-
 
         [HttpDelete]
         [Route("{id}")]

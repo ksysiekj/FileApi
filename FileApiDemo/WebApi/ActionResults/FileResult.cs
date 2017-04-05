@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using WebApi.Extensions;
 using WebApi.Models;
 using WebApi.Models.Reports;
 
@@ -25,7 +26,7 @@ namespace WebApi.ActionResults
 
         public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
-            string contentType = MimeMapping.GetMimeMapping(Path.GetExtension(_fileViewModel.FileName));
+            string contentType = MimeMapping.GetMimeMapping(_fileViewModel.GetExtension());
 
             HttpResponseMessage response =
                 _rangeContentInfo.IsPartial

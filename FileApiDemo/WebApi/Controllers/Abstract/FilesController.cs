@@ -4,12 +4,13 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using WebApi.ActionResults;
 using WebApi.Models;
+using WebApi.Models.Reports;
 
 namespace WebApi.Controllers.Abstract
 {
     public abstract class FilesController : ApiController
     {
-        protected RangeContentInfo SetRangeContentInfo()
+        protected RangeContentInfo GetRangeContentInfo()
         {
             RangeContentInfo rangeContentInfo = new RangeContentInfo
             {
@@ -19,7 +20,7 @@ namespace WebApi.Controllers.Abstract
             RangeHeaderValue rangeHeaderValue = Request.Headers.Range;
             if (rangeHeaderValue != null)
             {
-                if (rangeHeaderValue.Ranges.Count > 1 || !string.Equals(rangeHeaderValue.Unit, FileResult.RangeUnit, StringComparison.InvariantCultureIgnoreCase))
+                if (rangeHeaderValue.Ranges.Count > 1 || !string.Equals(rangeHeaderValue.Unit, ActionResults.FileResult.RangeUnit, StringComparison.InvariantCultureIgnoreCase))
                     throw new HttpResponseException(HttpStatusCode.RequestedRangeNotSatisfiable);
 
                 rangeContentInfo.IsPartial = true;
@@ -27,6 +28,11 @@ namespace WebApi.Controllers.Abstract
             }
 
             return rangeContentInfo;
+        }
+
+        protected IHttpActionResult FileResult(IFileViewModel fileViewModel, RangeContentInfo rangeContentInfo)
+        {
+            return new FileResult(fileViewModel, rangeContentInfo);
         }
     }
 }
